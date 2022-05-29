@@ -1,0 +1,38 @@
+<html>
+<head>
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center">Загрузите файл для разметки</h1>
+    <form class="d-flex justify-content-center" method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        {{ form.file(class="form-control" ) }}
+        {{ form.submit(class="btn btn-success") }}
+    </form>
+    <div class="d-flex justify-content-center">
+    <canvas style="background-image: url('{{ file }}')" id="canvas" height="500px" width="500px"></canvas>
+        </div>
+    {% if percent %}<h1 class="text-center">С вероятностью {{ percent }}% у вас отвалится</h1>{% endif %}
+</div>
+<div class="d-flex justify-content-center"> <a class="btn btn-success" href="/">Новое изображение</a></div>
+<script>
+    function drawRectangles() {
+        const canvas = document.querySelector('#canvas');
+
+        if (!canvas.getContext) {
+            return;
+        }
+
+        const ctx = canvas.getContext('2d');
+        ctx.beginPath();
+        ctx.lineWidth = "3";
+        ctx.strokeStyle = "red";
+        ctx.rect({% for elem in pos %}{{elem}}, {% endfor %});
+        ctx.stroke();
+    }
+
+    drawRectangles();
+</script>
+</body>
+</html>
